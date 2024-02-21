@@ -36,7 +36,7 @@ void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARunnerCharacter::Jump);
 	PlayerInputComponent->BindAction("MoveLeft", IE_Pressed, this, &ARunnerCharacter::MoveLeft);
 	PlayerInputComponent->BindAction("MoveRight", IE_Pressed, this, &ARunnerCharacter::MoveRight);
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ARunnerCharacter::Crouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ARunnerCharacter::Roll);
 }
 
 void ARunnerCharacter::MoveCharacterUpdate(float t)
@@ -60,7 +60,8 @@ void ARunnerCharacter::MoveRight()
 	ChangeLane();
 }
 
-void ARunnerCharacter::Crouch()
+void ARunnerCharacter::Roll()
 {
+	//PlayAnimMontage(RollMontage,1, NAME_None);
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
 }

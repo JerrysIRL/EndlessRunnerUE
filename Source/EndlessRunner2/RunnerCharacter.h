@@ -25,12 +25,18 @@ public:
 	UPROPERTY()
 	int CurrentLane = 1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= Animations)
+	UAnimMontage* RollMontage;
+
 	UFUNCTION(BlueprintCallable)
 	void MoveCharacterUpdate(float t);
 
 	/* Timeline event for Blueprints */
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeLane();
+
+	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,7 +49,7 @@ protected:
 
 	void MoveLeft();
 
-	void Crouch();
+	void Roll();
 
 	void MoveRight();
 
