@@ -8,7 +8,7 @@ void ARunnerGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	auto testPlatform = SpawnPlatform();
-	LanePositions = {testPlatform->LeftLane, testPlatform->CenterLane, testPlatform->RightLane};
+	LanePositions = {testPlatform->LeftLane.Y, testPlatform->CenterLane.Y, testPlatform->RightLane.Y};
 
 	for (int i = 0; i < InitialPlatformNum-1; i++)
 	{

@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "RunnerCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 class ARunnerGameMode;
 
 UCLASS()
@@ -23,9 +25,21 @@ public:
 	UPROPERTY()
 	int CurrentLane = 1;
 
+	UFUNCTION(BlueprintCallable)
+	void MoveCharacterUpdate(float t);
+
+	/* Timeline event for Blueprints */
+	UFUNCTION(BlueprintImplementableEvent)
+	void ChangeLane();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditDefaultsOnly)
+	UCameraComponent* Camera;
 
 	void MoveLeft();
 
@@ -40,5 +54,4 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };

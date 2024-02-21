@@ -29,7 +29,7 @@ public:
 	FVector GetNextSpawnPoint() const { return NextSpawnPosition; }
 
 	UPROPERTY()
-	TArray<FVector> LanePositions;
+	TArray<double> LanePositions;
 
 private:
 	FVector NextSpawnPosition = FVector::Zero();

@@ -4,16 +4,20 @@
 #include "RunnerCharacter.h"
 
 #include "RunnerGameMode.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ARunnerCharacter::ARunnerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
+	SpringArm->SetupAttachment(RootComponent);
+	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
+	Camera->SetupAttachment(SpringArm);
 }
 
-// Called when the game starts or when spawned
 void ARunnerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -35,18 +39,25 @@ void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ARunnerCharacter::Crouch);
 }
 
+void ARunnerCharacter::MoveCharacterUpdate(float t)
+{
+	auto CurrentLocation = GetActorLocation();
+	CurrentLocation.Y = FMath::Lerp(CurrentLocation.Y, GameMode->LanePositions[CurrentLane], t);
+	SetActorLocation(CurrentLocation);
+}
+
 void ARunnerCharacter::MoveLeft()
 {
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Moving Left!"));
 	CurrentLane = FMath::Clamp(CurrentLane - 1, 0, 2);
-	SetActorLocation(GameMode->LanePositions[CurrentLane]);
+	ChangeLane();
 }
 
-void ARunnerCharacter::MoveRight()
+void ARunnerCharacter::MoveRight()	
 {
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Moving right!"));
 	CurrentLane = FMath::Clamp(CurrentLane + 1, 0, 2);
-	SetActorLocation(GameMode->LanePositions[CurrentLane]);
+	ChangeLane();
 }
 
 void ARunnerCharacter::Crouch()
