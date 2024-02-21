@@ -5,6 +5,7 @@
 
 #include "RunnerGameMode.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -62,6 +63,8 @@ void ARunnerCharacter::MoveRight()
 
 void ARunnerCharacter::Roll()
 {
-	//PlayAnimMontage(RollMontage,1, NAME_None);
+	if(GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
+		return;
+	PlayAnimMontage(RollMontage,1.3f, NAME_None);
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
 }
