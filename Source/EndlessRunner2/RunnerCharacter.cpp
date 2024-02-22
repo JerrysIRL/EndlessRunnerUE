@@ -4,9 +4,11 @@
 #include "RunnerCharacter.h"
 #include "RunnerGameMode.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 ARunnerCharacter::ARunnerCharacter()
@@ -63,6 +65,16 @@ void ARunnerCharacter::Roll()
 {
 	if (GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
 		return;
-	PlayAnimMontage(RollMontage, 1.3f, NAME_None);
+	float animTime = PlayAnimMontage(RollMontage, 1.3f, NAME_None);
+	Crouch();
+	GetWorldTimerManager().SetTimer(rollHandle,this, &ARunnerCharacter::ResetRoll, animTime, false);
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
+	
 }
+
+void ARunnerCharacter::ResetRoll()
+{
+	UnCrouch();
+}
+
+

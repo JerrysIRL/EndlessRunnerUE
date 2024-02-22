@@ -14,14 +14,18 @@ UCLASS()
 class ENDLESSRUNNER2_API ARunnerCharacter : public ACharacter
 {
 	GENERATED_BODY()
-	
+
+	void ResetRoll();
+
 	UPROPERTY()
 	ARunnerGameMode* GameMode = nullptr;
-	
+
+	FTimerHandle rollHandle;
+
 public:
 	// Sets default values for this character's properties
 	ARunnerCharacter();
-	
+
 	UPROPERTY()
 	int CurrentLane = 1;
 
@@ -35,8 +39,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeLane();
 
-	
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -53,8 +55,7 @@ protected:
 
 	void MoveRight();
 
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
