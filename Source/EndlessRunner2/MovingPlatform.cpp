@@ -49,7 +49,7 @@ void AMovingPlatform::BeginPlay()
 void AMovingPlatform::OnTriggerBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	GetWorldTimerManager().SetTimer(MoveHandle,this, &AMovingPlatform::MovePlatformToEnd ,2.0f, false);
+	GetWorldTimerManager().SetTimer(MoveHandle,this, &AMovingPlatform::MovePlatformToEnd ,1.0f, false);
 }
 
 void AMovingPlatform::Tick(float DeltaTime)
@@ -59,13 +59,14 @@ void AMovingPlatform::Tick(float DeltaTime)
 	SetActorLocation(desiredLocation);
 }
 
-FVector AMovingPlatform::GetSpawnPosition() const
+USceneComponent* AMovingPlatform::GetSpawnPosition() const
 {
-	return this->SpawnPosition->GetComponentLocation();
+	return this->SpawnPosition;
 }
 
 void AMovingPlatform::MovePlatformToEnd()
 {
-	this->SetActorLocation(GameMode->GetNextSpawnPoint());
+	SetActorLocation(GameMode->GetNextSpawnPoint()->GetComponentLocation());
+	GameMode->SetNextSpawnPoint(SpawnPosition);
 }
 

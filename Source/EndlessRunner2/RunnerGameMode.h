@@ -23,18 +23,21 @@ protected:
 	int InitialPlatformNum = 10;
 
 	AMovingPlatform* SpawnPlatform(const bool SpawnObstacles);
-	
+
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
 	TArray<AObstacle*> Obstacles;
 
 public:
-	FVector GetNextSpawnPoint() const { return NextSpawnPosition; }
+	USceneComponent* GetNextSpawnPoint() const { return NextSpawnPosition; }
+
+	void SetNextSpawnPoint(USceneComponent* Value) { NextSpawnPosition = Value; }
 
 	UPROPERTY()
 	TArray<double> LanePositions;
 
 private:
-	FVector NextSpawnPosition = FVector::Zero();
+	UPROPERTY()
+	USceneComponent* NextSpawnPosition;
 };

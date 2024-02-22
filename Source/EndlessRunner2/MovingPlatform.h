@@ -72,5 +72,5 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
-	FVector GetSpawnPosition() const;
+	USceneComponent* GetSpawnPosition() const;
 };

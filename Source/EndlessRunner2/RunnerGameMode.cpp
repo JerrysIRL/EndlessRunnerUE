@@ -7,10 +7,11 @@
 void ARunnerGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	auto initialPlatform = SpawnPlatform(false);
+	const auto initialPlatform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, FVector::Zero(), FRotator::ZeroRotator);
+	NextSpawnPosition = initialPlatform->GetSpawnPosition();
 	LanePositions = {initialPlatform->LeftLane.Y, initialPlatform->CenterLane.Y, initialPlatform->RightLane.Y};
 
-	for (int i = 0; i < InitialPlatformNum - 1; i++)
+	for (int i = 0; i < InitialPlatformNum-1; i++)
 	{
 		SpawnPlatform(true);
 	}
@@ -18,11 +19,12 @@ void ARunnerGameMode::BeginPlay()
 
 AMovingPlatform* ARunnerGameMode::SpawnPlatform(bool SpawnObstacles)
 {
-	const auto Platform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, NextSpawnPosition, FRotator::ZeroRotator);
+	const auto Platform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, NextSpawnPosition->GetComponentLocation(), FRotator::ZeroRotator);
 	NextSpawnPosition = Platform->GetSpawnPosition();
-	if (SpawnObstacles)
+	if(SpawnObstacles)
 	{
 		//spawn obstacles.
 	}
 	return Platform;
 }
+	
