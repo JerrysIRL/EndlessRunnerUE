@@ -7,18 +7,22 @@
 void ARunnerGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	auto testPlatform = SpawnPlatform();
-	LanePositions = {testPlatform->LeftLane.Y, testPlatform->CenterLane.Y, testPlatform->RightLane.Y};
+	auto initialPlatform = SpawnPlatform(false);
+	LanePositions = {initialPlatform->LeftLane.Y, initialPlatform->CenterLane.Y, initialPlatform->RightLane.Y};
 
-	for (int i = 0; i < InitialPlatformNum-1; i++)
+	for (int i = 0; i < InitialPlatformNum - 1; i++)
 	{
-		SpawnPlatform();
+		SpawnPlatform(true);
 	}
 }
 
-AMovingPlatform* ARunnerGameMode::SpawnPlatform()
+AMovingPlatform* ARunnerGameMode::SpawnPlatform(bool SpawnObstacles)
 {
 	const auto Platform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, NextSpawnPosition, FRotator::ZeroRotator);
 	NextSpawnPosition = Platform->GetSpawnPosition();
+	if (SpawnObstacles)
+	{
+		//spawn obstacles.
+	}
 	return Platform;
 }

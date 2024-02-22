@@ -2,7 +2,6 @@
 
 
 #include "RunnerCharacter.h"
-
 #include "RunnerGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -24,7 +23,6 @@ void ARunnerCharacter::BeginPlay()
 	Super::BeginPlay();
 	GameMode = Cast<ARunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
-
 
 void ARunnerCharacter::Tick(float DeltaTime)
 {
@@ -54,7 +52,7 @@ void ARunnerCharacter::MoveLeft()
 	ChangeLane();
 }
 
-void ARunnerCharacter::MoveRight()	
+void ARunnerCharacter::MoveRight()
 {
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Moving right!"));
 	CurrentLane = FMath::Clamp(CurrentLane + 1, 0, 2);
@@ -63,8 +61,8 @@ void ARunnerCharacter::MoveRight()
 
 void ARunnerCharacter::Roll()
 {
-	if(GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
+	if (GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
 		return;
-	PlayAnimMontage(RollMontage,1.3f, NAME_None);
+	PlayAnimMontage(RollMontage, 1.3f, NAME_None);
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
 }

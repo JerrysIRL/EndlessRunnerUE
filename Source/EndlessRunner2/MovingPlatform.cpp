@@ -12,6 +12,7 @@
 AMovingPlatform::AMovingPlatform()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	
 	RootComp = CreateDefaultSubobject<USceneComponent>("Root");
 	SetRootComponent(RootComp);
 	
@@ -49,12 +50,13 @@ void AMovingPlatform::OnTriggerBoxOverlap(UPrimitiveComponent* OverlappedCompone
 	const FHitResult& SweepResult)
 {
 	GetWorldTimerManager().SetTimer(MoveHandle,this, &AMovingPlatform::MovePlatformToEnd ,2.0f, false);
-	
 }
 
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	auto desiredLocation = GetActorLocation() + -FVector::ForwardVector * speed * DeltaTime;
+	SetActorLocation(desiredLocation);
 }
 
 FVector AMovingPlatform::GetSpawnPosition() const

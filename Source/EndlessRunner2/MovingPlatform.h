@@ -28,6 +28,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, meta=(MakeEditWidget = true))
 	FVector RightLane;
+
+	UPROPERTY(EditDefaultsOnly)
+	float speed = 100.0f;
 	
 protected:
 	virtual void BeginPlay() override;

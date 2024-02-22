@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "RunnerGameMode.generated.h"
 
+class AObstacle;
 class AMovingPlatform;
 
 UCLASS()
@@ -21,9 +22,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 	int InitialPlatformNum = 10;
 
-	AMovingPlatform* SpawnPlatform();
+	AMovingPlatform* SpawnPlatform(const bool SpawnObstacles);
 	
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	TArray<AObstacle*> Obstacles;
 
 public:
 	FVector GetNextSpawnPoint() const { return NextSpawnPosition; }
