@@ -16,8 +16,6 @@ class ENDLESSRUNNER2_API ARunnerGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMovingPlatform> PlatformBP;
 
 	UPROPERTY(EditAnywhere)
 	int InitialPlatformNum = 10;
@@ -26,10 +24,12 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
-	TArray<AObstacle*> Obstacles;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMovingPlatform> PlatformBP;
+
 
 public:
+	
 	USceneComponent* GetNextSpawnPoint() const { return NextSpawnPosition; }
 
 	void SetNextSpawnPoint(USceneComponent* Value) { NextSpawnPosition = Value; }

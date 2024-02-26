@@ -14,23 +14,16 @@ UCLASS()
 class ENDLESSRUNNER2_API ARunnerCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
-	void ResetRoll();
-
-	UPROPERTY()
-	ARunnerGameMode* GameMode = nullptr;
-
-	FTimerHandle rollHandle;
-
+	
 public:
-	// Sets default values for this character's properties
+	
 	ARunnerCharacter();
-
-	UPROPERTY()
-	int CurrentLane = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= Animations)
 	UAnimMontage* RollMontage;
+
+	UPROPERTY()
+	int CurrentLane = 1;
 
 	UFUNCTION(BlueprintCallable)
 	void MoveCharacterUpdate(float t);
@@ -39,15 +32,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeLane();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void SpawnObstaclesWave();
+
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* Camera;
+
+	virtual void BeginPlay() override;
 
 	void MoveLeft();
 
@@ -55,10 +51,11 @@ protected:
 
 	void MoveRight();
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UPROPERTY()
+	ARunnerGameMode* GameMode = nullptr;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	FTimerHandle rollHandle;
+
+	void ResetRoll();
 };

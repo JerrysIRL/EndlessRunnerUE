@@ -4,7 +4,6 @@
 #include "RunnerCharacter.h"
 #include "RunnerGameMode.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -13,9 +12,11 @@
 // Sets default values
 ARunnerCharacter::ARunnerCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
-	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->SetupAttachment(GetMesh());
+	
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 }
@@ -26,10 +27,6 @@ void ARunnerCharacter::BeginPlay()
 	GameMode = Cast<ARunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
-void ARunnerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -65,16 +62,10 @@ void ARunnerCharacter::Roll()
 {
 	if (GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
 		return;
-	float animTime = PlayAnimMontage(RollMontage, 1.3f, NAME_None);
+	const float animDuration = PlayAnimMontage(RollMontage, 1.5f, NAME_None);
 	Crouch();
-	GetWorldTimerManager().SetTimer(rollHandle,this, &ARunnerCharacter::ResetRoll, animTime, false);
+	GetWorldTimerManager().SetTimer(rollHandle, this, &ARunnerCharacter::ResetRoll, animDuration, false);
 	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
-	
 }
 
-void ARunnerCharacter::ResetRoll()
-{
-	UnCrouch();
-}
-
-
+void ARunnerCharacter::ResetRoll() { UnCrouch(); }
