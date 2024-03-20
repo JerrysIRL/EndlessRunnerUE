@@ -34,8 +34,6 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void SpawnObstaclesWave();
-
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* SpringArm;
