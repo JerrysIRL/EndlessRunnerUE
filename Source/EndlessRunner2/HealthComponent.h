@@ -7,11 +7,17 @@
 #include "HealthComponent.generated.h"
 
 
+class ARunnerGameMode;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ENDLESSRUNNER2_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY()
+	ARunnerGameMode* GameMode;
+	
 public:	
 	UHealthComponent();
 

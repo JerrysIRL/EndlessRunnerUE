@@ -27,4 +27,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetScoreCount(float Value);
+
+	UFUNCTION(BlueprintCallable)
+	void SetLifeValue(float Lifes);
 };

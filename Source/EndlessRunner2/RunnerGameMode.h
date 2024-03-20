@@ -12,6 +12,7 @@ class AObstacle;
 class AMovingPlatform;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinCollected, float, CoinCollect);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerHit, float, PlayerHit);
 
 UCLASS()
 class ENDLESSRUNNER2_API ARunnerGameMode : public AGameModeBase
@@ -46,6 +47,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnCoinCollected OnScoreChange;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnPlayerHit OnPlayerHit;
 
 	UPROPERTY()
 	float Score = 0;
