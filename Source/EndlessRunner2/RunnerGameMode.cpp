@@ -7,7 +7,6 @@
 #include "MovingPlatform.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 ARunnerGameMode::ARunnerGameMode()
 {
@@ -28,7 +27,7 @@ void ARunnerGameMode::BeginPlay()
 	CurrentPlatformSpeed = StartSpeed;
 	GetWorld()->GetTimerManager().SetTimer(SpeedTimerHandle, this, &ARunnerGameMode::AddSpeed, SpeedIncreaseTime, true);
 	
-	const auto initialPlatform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, FVector::Zero(), FRotator::ZeroRotator);
+	const auto initialPlatform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, FindPlayerStart(GetWorld()->GetFirstPlayerController())->GetActorLocation() + FVector(0,0,-1000), FRotator::ZeroRotator);
 	NextSpawnPosition = initialPlatform->GetSpawnPosition();
 	LanePositions = {
 		initialPlatform->LeftLane->GetComponentLocation().Y,
