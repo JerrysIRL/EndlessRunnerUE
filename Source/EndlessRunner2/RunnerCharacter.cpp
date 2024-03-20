@@ -9,14 +9,13 @@
 #include "Kismet/GameplayStatics.h"
 
 
-// Sets default values
 ARunnerCharacter::ARunnerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
 	SpringArm->SetupAttachment(GetMesh());
-	
+
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 }
@@ -26,7 +25,6 @@ void ARunnerCharacter::BeginPlay()
 	Super::BeginPlay();
 	GameMode = Cast<ARunnerGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
-
 
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -46,14 +44,12 @@ void ARunnerCharacter::MoveCharacterUpdate(float t)
 
 void ARunnerCharacter::MoveLeft()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Moving Left!"));
 	CurrentLane = FMath::Clamp(CurrentLane - 1, 0, 2);
 	ChangeLane();
 }
 
 void ARunnerCharacter::MoveRight()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Moving right!"));
 	CurrentLane = FMath::Clamp(CurrentLane + 1, 0, 2);
 	ChangeLane();
 }
@@ -65,7 +61,9 @@ void ARunnerCharacter::Roll()
 	const float animDuration = PlayAnimMontage(RollMontage, 1.5f, NAME_None);
 	Crouch();
 	GetWorldTimerManager().SetTimer(rollHandle, this, &ARunnerCharacter::ResetRoll, animDuration, false);
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Crouching!"));
 }
 
-void ARunnerCharacter::ResetRoll() { UnCrouch(); }
+void ARunnerCharacter::ResetRoll()
+{
+	UnCrouch();
+}
