@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DSP/Chorus.h"
 #include "GameFramework/Actor.h"
 #include "MovingPlatform.generated.h"
 
@@ -18,6 +17,7 @@ enum EObstacleTypes
 	Wall,
 	Coin,
 	Jump,
+	JumpRoll,
 	Roll,
 	Empty
 };
@@ -46,15 +46,12 @@ public:
 	UPROPERTY()
 	TArray<UArrowComponent*> Lanes;
 
-	UPROPERTY(EditDefaultsOnly)
-	float speed = 100.0f;
-
 	UFUNCTION()
 	void SpawnObstacleWave();
 
 protected:
 	virtual void BeginPlay() override;
-
+	
 	UPROPERTY()
 	ARunnerGameMode* GameMode;
 
@@ -81,7 +78,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UArrowComponent* SpawnPosition;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category=Obstacles)
 	TSubclassOf<AObstacle> WallBP;
 	
@@ -93,13 +90,17 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Obstacles)
 	TSubclassOf<AObstacle> JumpObstacleBP;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Obstacles)
+	TSubclassOf<AObstacle> JumpRollObstacleBP;
 
-	TArray<EObstacleTypes> DodgableObstacles = {Coin, Roll, Jump, Empty};
-
-	FActorSpawnParameters spawnParams;
 
 	UFUNCTION()
 	void OnTriggerBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	TArray<EObstacleTypes> DodgableObstacles = {Coin, Roll, Wall, JumpRoll, Jump, Empty};
+
+	FActorSpawnParameters spawnParams;
 
 	TArray<EObstacleTypes> ChooseRandomObstacles(int32 NumObstacles);
 
@@ -109,4 +110,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	USceneComponent* GetSpawnPosition() const;
+	
+	void ResetPlatform();
 };

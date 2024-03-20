@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "MovingPlatform.h"
 #include "Obstacle.h"
@@ -73,7 +71,10 @@ void AMovingPlatform::SpawnObstacleWave()
 			break;
 		case Roll: obstacle = GetWorld()->SpawnActor<AObstacle>(RollObstacleBP, Pos, FRotator::ZeroRotator);
 			break;
-		case Empty: break;
+		case JumpRoll: obstacle = GetWorld()->SpawnActor<AObstacle>(JumpRollObstacleBP, Pos, FRotator::ZeroRotator);
+			break;
+		case Empty: obstacle = GetWorld()->SpawnActor<AObstacle>(CoinBP, Pos, FRotator::ZeroRotator);
+			break;
 		}
 		if (obstacle)
 			obstacle->AttachToComponent(Lanes[i], FAttachmentTransformRules::KeepWorldTransform);
@@ -116,8 +117,8 @@ void AMovingPlatform::OnTriggerBoxOverlap(UPrimitiveComponent* OverlappedCompone
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	auto desiredLocation = GetActorLocation() + -FVector::ForwardVector * speed * DeltaTime;
-	SetActorLocation(desiredLocation);
+	const auto NewLocation = GetActorLocation() + -FVector::ForwardVector * GameMode->GetSpeed() * DeltaTime;
+	SetActorLocation(NewLocation);
 }
 
 USceneComponent* AMovingPlatform::GetSpawnPosition() const
@@ -125,8 +126,22 @@ USceneComponent* AMovingPlatform::GetSpawnPosition() const
 	return this->SpawnPosition;
 }
 
+void AMovingPlatform::ResetPlatform()
+{
+	TArray<AActor*> ChildrenActors;
+	GetAttachedActors(ChildrenActors);
+	for (auto* child : ChildrenActors)
+		child->Destroy();
+}
+
 void AMovingPlatform::MovePlatformToEnd()
 {
 	SetActorLocation(GameMode->GetNextSpawnPoint()->GetComponentLocation());
+	ResetPlatform();
+	if (GameMode->IsObstacleWave)
+	{
+		SpawnObstacleWave();
+	}
+	GameMode->IsObstacleWave = !GameMode->IsObstacleWave;
 	GameMode->SetNextSpawnPoint(SpawnPosition);
 }
