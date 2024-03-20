@@ -2,8 +2,8 @@
 
 
 #include "Obstacle.h"
+#include "Kismet/GameplayStatics.h"
 
-// Sets default values
 AObstacle::AObstacle()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -13,13 +13,22 @@ AObstacle::AObstacle()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(RootComp);
+	Mesh->SetCollisionProfileName(FName("OverlapOnlyPawn"));
 }
 
-// Called when the game starts or when spawned
 void AObstacle::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AObstacle::OnComponentBeginOverlap);
 }
 
-
+void AObstacle::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor->Tags.Contains("Coin"))
+	{
+		return;
+	}
+	UGameplayStatics::ApplyDamage(OtherActor, 1, GetInstigatorController(), this, UDamageType::StaticClass());
+	Destroy();
+}
+ 
