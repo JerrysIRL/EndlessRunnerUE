@@ -4,6 +4,8 @@
 .idea/
 Plugins/Developer/RiderLink/
 
+/Content/LowPolyMegapolis/Maps
+
 # Compiled Object files
 *.slo
 *.lo
