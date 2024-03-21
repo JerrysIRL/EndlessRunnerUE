@@ -27,20 +27,16 @@ class ENDLESSRUNNER2_API AMovingPlatform : public AActor
 {
 	GENERATED_BODY()
 
-	FTimerHandle MoveHandle;
-
-	bool IsAllWalls(TArray<EObstacleTypes> RandomObstacles);
-
 public:
 	AMovingPlatform();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category=Lanes)
 	UArrowComponent* LeftLane;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category=Lanes)
 	UArrowComponent* CenterLane;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category=Lanes)
 	UArrowComponent* RightLane;
 
 	UPROPERTY()
@@ -93,8 +89,7 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Obstacles)
 	TSubclassOf<AObstacle> JumpRollObstacleBP;
-
-
+	
 	UFUNCTION()
 	void OnTriggerBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
@@ -103,13 +98,17 @@ protected:
 	FActorSpawnParameters spawnParams;
 
 	TArray<EObstacleTypes> ChooseRandomObstacles(int32 NumObstacles);
+	
+	FTimerHandle MoveHandle;
 
 	void MovePlatformToEnd();
-
+	
+	bool IsAllWalls(TArray<EObstacleTypes> RandomObstacles);
+	
 public:
-	virtual void Tick(float DeltaTime) override;
-
 	USceneComponent* GetSpawnPosition() const;
 	
-	void ResetPlatform();
+	void ResetPlatform() const;
+	
+	virtual void Tick(float DeltaTime) override;
 };

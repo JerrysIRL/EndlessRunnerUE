@@ -126,7 +126,7 @@ USceneComponent* AMovingPlatform::GetSpawnPosition() const
 	return this->SpawnPosition;
 }
 
-void AMovingPlatform::ResetPlatform()
+void AMovingPlatform::ResetPlatform() const
 {
 	TArray<AActor*> ChildrenActors;
 	GetAttachedActors(ChildrenActors);

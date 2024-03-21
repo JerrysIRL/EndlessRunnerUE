@@ -17,33 +17,33 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerHit, float, PlayerHit);
 UCLASS()
 class ENDLESSRUNNER2_API ARunnerGameMode : public AGameModeBase
 {
+	
 public:
+	
 	ARunnerGameMode();
 
-private:
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY()
-	FTimerHandle SpeedTimerHandle;
-
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category= Platforms)
 	int InitialPlatformNum = 10;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category= Platforms)
+	float StartSpeed = 500;
+	
+	UPROPERTY(EditDefaultsOnly, Category= Platforms)
+	float SpeedIncrease = 10;
+	
+	UPROPERTY(EditDefaultsOnly, Category= Platforms)
+	float MaxSpeed = 1000;
+
+	UPROPERTY(EditDefaultsOnly, Category= Platforms)
+	float SpeedIncreaseTime = 3;
+	
+	UPROPERTY(EditDefaultsOnly, Category= Platforms)
 	TSubclassOf<AMovingPlatform> PlatformBP;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category= UI)
 	TSubclassOf<UGameHudWidget> HudWidgetBP;
-
-	UPROPERTY(VisibleInstanceOnly)
-	UGameHudWidget* HudWidget;
-
-	AMovingPlatform* SpawnPlatform(const bool SpawnObstacles);
-
-	virtual void BeginPlay() override;
-
-public:
 	
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnCoinCollected OnScoreChange;
@@ -52,28 +52,16 @@ public:
 	FOnPlayerHit OnPlayerHit;
 
 	UPROPERTY()
+	TArray<double> LanePositions;
+	
+	UPROPERTY()
 	float Score = 0;
 
 	UPROPERTY()
 	bool IsObstacleWave = false;
-
-	UPROPERTY()
-	TArray<double> LanePositions;
-
+	
 	UFUNCTION(BlueprintCallable)
 	void AddScore(float Value);
-
-	UPROPERTY(EditDefaultsOnly)
-	float StartSpeed = 500;
-	
-	UPROPERTY(EditDefaultsOnly)
-	float SpeedIncrease = 10;
-	
-	UPROPERTY(EditDefaultsOnly)
-	float MaxSpeed = 1000;
-
-	UPROPERTY(EditDefaultsOnly)
-	float SpeedIncreaseTime = 3;
 
 	USceneComponent* GetNextSpawnPoint() const { return NextSpawnPosition; }
 
@@ -86,11 +74,21 @@ private:
 	UPROPERTY()
 	float CurrentPlatformSpeed = 500;
 	
-	UFUNCTION()
-	void AddSpeed();
+	UPROPERTY()
+	USceneComponent* NextSpawnPosition = nullptr;
+
+	UPROPERTY(VisibleInstanceOnly)
+	UGameHudWidget* HudWidget = nullptr;
 
 	UPROPERTY()
-	USceneComponent* NextSpawnPosition;
+	FTimerHandle SpeedTimerHandle;
+	
+	UFUNCTION()
+	void AddSpeed();
+	
+	AMovingPlatform* SpawnPlatform(const bool SpawnObstacles);
+
+	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
 };

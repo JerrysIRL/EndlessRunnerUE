@@ -29,7 +29,6 @@ void ARunnerCharacter::BeginPlay()
 void ARunnerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARunnerCharacter::Jump);
 	PlayerInputComponent->BindAction("MoveLeft", IE_Pressed, this, &ARunnerCharacter::MoveLeft);
 	PlayerInputComponent->BindAction("MoveRight", IE_Pressed, this, &ARunnerCharacter::MoveRight);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ARunnerCharacter::Roll);
@@ -58,9 +57,13 @@ void ARunnerCharacter::Roll()
 {
 	if (GetCharacterMovement()->IsFalling() || GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
 		return;
-	const float animDuration = PlayAnimMontage(RollMontage, 1.5f, NAME_None);
-	Crouch();
-	GetWorldTimerManager().SetTimer(rollHandle, this, &ARunnerCharacter::ResetRoll, animDuration, false);
+
+	if (!GetWorldTimerManager().IsTimerActive(rollHandle))
+	{
+		Crouch();
+		const float animDuration = PlayAnimMontage(RollMontage, 1.7, NAME_None) -0.5f;
+		GetWorldTimerManager().SetTimer(rollHandle, this, &ARunnerCharacter::ResetRoll, animDuration, false);
+	}
 }
 
 void ARunnerCharacter::ResetRoll()

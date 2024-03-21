@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "GameHudWidget.h"
 #include "RunnerGameMode.h"
@@ -24,6 +22,5 @@ void UGameHudWidget::SetScoreCount(float Value)
 void UGameHudWidget::SetLifeValue(float Lifes)
 {
 	float HealthProcent = Lifes / 3;
-	UE_LOG(LogTemp, Warning, TEXT("Healthprocent: %f"), HealthProcent);
 	HealthImage->SetPercent(HealthProcent);
 }

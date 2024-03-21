@@ -13,10 +13,9 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ENDLESSRUNNER2_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
-private:
+	
 	UPROPERTY()
-	ARunnerGameMode* GameMode;
+	ARunnerGameMode* GameMode = nullptr;
 	
 public:	
 	UHealthComponent();

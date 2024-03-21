@@ -32,27 +32,26 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeLane();
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-protected:
 	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* Camera;
+	
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+
+	UPROPERTY()
+	ARunnerGameMode* GameMode = nullptr;
+	
 	virtual void BeginPlay() override;
-
 
 	void MoveLeft();
 
 	void Roll();
 
 	void MoveRight();
-
-private:
-	UPROPERTY()
-	ARunnerGameMode* GameMode = nullptr;
 
 	FTimerHandle rollHandle;
 

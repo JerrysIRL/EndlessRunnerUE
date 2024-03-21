@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "RunnerGameMode.h"
 #include "GameHudWidget.h"
@@ -7,7 +5,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
 
-ARunnerGameMode::ARunnerGameMode()
+ARunnerGameMode::ARunnerGameMode() 
 {
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.bCanEverTick = true;
@@ -26,7 +24,7 @@ void ARunnerGameMode::BeginPlay()
 	CurrentPlatformSpeed = StartSpeed;
 	GetWorld()->GetTimerManager().SetTimer(SpeedTimerHandle, this, &ARunnerGameMode::AddSpeed, SpeedIncreaseTime, true);
 	
-	const auto initialPlatform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, FindPlayerStart(GetWorld()->GetFirstPlayerController())->GetActorLocation(), FRotator::ZeroRotator);
+	const auto initialPlatform = GetWorld()->SpawnActor<AMovingPlatform>(PlatformBP, FindPlayerStart(GetWorld()->GetFirstPlayerController())->GetActorLocation()+ FVector(0,0,-40), FRotator::ZeroRotator);
 	NextSpawnPosition = initialPlatform->GetSpawnPosition();
 	LanePositions = {
 		initialPlatform->LeftLane->GetComponentLocation().Y,
@@ -44,7 +42,6 @@ void ARunnerGameMode::BeginPlay()
 void ARunnerGameMode::AddSpeed()
 {
 	CurrentPlatformSpeed = FMath::Clamp(CurrentPlatformSpeed + SpeedIncrease, 0, MaxSpeed);
-	UE_LOG(LogTemp, Warning, TEXT("Adding speed, current: %f"), CurrentPlatformSpeed);
 }
 
 void ARunnerGameMode::Tick(float DeltaTime)
