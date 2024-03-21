@@ -1,5 +1,5 @@
 # **Endless Runner**
-_Endless Runner_ is a local multiplayer 3D game made in Unreal Engine 5.1 using C++. The goal of the game is to run and avoid obstacles for as long as possible while collecting coins. As the game progresses, the difficulty increases, making it more challenging to survive.
+_Endless Runner_ is a 3D game made in Unreal Engine 5.2 using C++. The goal of the game is to run and avoid obstacles for as long as possible while collecting coins. As the game progresses, the difficulty increases, making it more challenging to survive.
 
 ## Mechanics
 Endless Runner features several game mechanics, including:
